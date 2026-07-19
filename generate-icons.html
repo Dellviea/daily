@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Generate PWA Icons</title>
+    <style>
+        body { font-family: sans-serif; max-width: 500px; margin: 40px auto; padding: 20px; text-align: center; }
+        button { padding: 12px 24px; font-size: 16px; border-radius: 8px; border: none; background: #6366f1; color: white; cursor: pointer; margin: 8px; }
+        button:hover { background: #4f46e5; }
+        canvas { border: 1px solid #e2e8f0; border-radius: 8px; margin: 8px; }
+        .info { color: #64748b; font-size: 14px; margin-top: 16px; }
+    </style>
+</head>
+<body>
+    <h2>PWA Icon Generator</h2>
+    <p>Click to generate and download PNG icons for the manifest.</p>
+    <button onclick="generate(192)">Download 192x192</button>
+    <button onclick="generate(512)">Download 512x512</button>
+    <div id="preview"></div>
+    <p class="info">Place downloaded files in the <code>icons/</code> folder as <code>icon-192.png</code> and <code>icon-512.png</code>.</p>
+
+    <script>
+        function generate(size) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            const s = size / 512;
+
+            // Background gradient
+            const grad = ctx.createLinearGradient(0, 0, size, size);
+            grad.addColorStop(0, '#6366f1');
+            grad.addColorStop(1, '#8b5cf6');
+            ctx.fillStyle = grad;
+            roundRect(ctx, 0, 0, size, size, 96 * s);
+            ctx.fill();
+
+            // Circle track
+            ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+            ctx.lineWidth = 18 * s;
+            ctx.beginPath();
+            ctx.arc(256 * s, 220 * s, 100 * s, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Circle progress
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 18 * s;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.arc(256 * s, 220 * s, 100 * s, -Math.PI / 2, -Math.PI / 2 + Math.PI * 1.5);
+            ctx.stroke();
+
+            // Checkmark
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 18 * s;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+            ctx.moveTo(220 * s, 220 * s);
+            ctx.lineTo(248 * s, 248 * s);
+            ctx.lineTo(296 * s, 200 * s);
+            ctx.stroke();
+
+            // Text
+            ctx.fillStyle = 'rgba(255,255,255,0.9)';
+            ctx.font = `bold ${52 * s}px sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.fillText('GOALS', 256 * s, 400 * s);
+
+            // Download
+            const link = document.createElement('a');
+            link.download = `icon-${size}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        function roundRect(ctx, x, y, w, h, r) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x + w - r, y);
+            ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+            ctx.lineTo(x + w, y + h - r);
+            ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            ctx.lineTo(x + r, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+            ctx.lineTo(x, y + r);
+            ctx.quadraticCurveTo(x, y, x + r, y);
+            ctx.closePath();
+        }
+    </script>
+</body>
+</html>
