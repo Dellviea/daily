@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Goal Tracker</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Style Sheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header>
+            <div class="header-title-area">
+                <h1>Target Harian</h1>
+                <div class="header-sub">
+                    <p id="current-date">Minggu, 19 Juli 2026</p>
+                    <div class="streak-badge" id="streak-badge" title="Streak harian Anda">
+                        <span class="streak-icon" id="streak-icon">🔥</span>
+                        <span class="streak-count" id="streak-count">0</span>
+                    </div>
+                </div>
+            </div>
+            <div class="header-controls">
+                <!-- Share Button -->
+                <button class="header-btn" id="share-btn" title="Bagikan Pencapaian">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                        <polyline points="16 6 12 2 8 6"></polyline>
+                        <line x1="12" y1="2" x2="12" y2="15"></line>
+                    </svg>
+                </button>
+                <!-- Notification Bell Button -->
+                <button class="header-btn" id="notification-btn" title="Aktifkan Pengingat Harian">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                </button>
+                <div class="theme-select-container">
+                    <button class="theme-toggle-btn" id="theme-toggle" aria-label="Ganti Tema">
+                        <!-- Palette Icon -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 14.7255 3.09032 17.1962 4.85857 19C4.85857 19 4 20 4 21C4 22 5 22 6 22C7 22 8 21 8 21C9.80384 21.9097 12.2745 22 12 22Z"></path>
+                            <circle cx="7.5" cy="10.5" r="1.5" fill="currentColor"></circle>
+                            <circle cx="11.5" cy="7.5" r="1.5" fill="currentColor"></circle>
+                            <circle cx="16.5" cy="9.5" r="1.5" fill="currentColor"></circle>
+                            <circle cx="15.5" cy="14.5" r="1.5" fill="currentColor"></circle>
+                        </svg>
+                    </button>
+                    <!-- Custom Theme Dropdown menu -->
+                    <div class="theme-dropdown" id="theme-dropdown">
+                        <div class="theme-option" data-theme="light">Terang</div>
+                        <div class="theme-option" data-theme="dark">Gelap</div>
+                        <div class="theme-option locked" data-theme="matcha" id="theme-opt-matcha">
+                            <span>Matcha Calm</span> <span class="lock-indicator">🔒</span>
+                        </div>
+                        <div class="theme-option locked" data-theme="rose" id="theme-opt-rose">
+                            <span>Rose Quartz</span> <span class="lock-indicator">🔒</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Progress Card -->
+        <div class="progress-card">
+            <div class="progress-info">
+                <h2>Progress Hari Ini</h2>
+                <p id="progress-stats">0 dari 0 selesai</p>
+                <span class="progress-motivation" id="progress-motivation">Tulis target pertamamu sekarang! 🎯</span>
+            </div>
+            <div class="progress-circle-container">
+                <svg class="progress-ring" width="80" height="80">
+                    <defs>
+                        <linearGradient id="progress-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="var(--gradient-start)" />
+                            <stop offset="100%" stop-color="var(--gradient-end)" />
+                        </linearGradient>
+                    </defs>
+                    <circle class="progress-ring-circle-bg" stroke-width="6" fill="transparent" r="36" cx="40" cy="40"/>
+                    <circle class="progress-ring-circle" stroke-width="6" fill="transparent" r="36" cx="40" cy="40"/>
+                </svg>
+                <div class="progress-percentage" id="progress-percentage">0%</div>
+            </div>
+        </div>
+
+        <!-- Weekly Activity Card -->
+        <div class="activity-card">
+            <h3 class="activity-title">Aktivitas 7 Hari Terakhir</h3>
+            <div class="activity-grid" id="activity-grid">
+                <!-- Days injected by JS -->
+            </div>
+        </div>
+
+        <!-- Weekly Analytics Card -->
+        <div class="analytics-card collapsed" id="analytics-card">
+            <div class="analytics-header" id="analytics-toggle-btn">
+                <h3 class="analytics-title">Analitik Mingguan</h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="analytics-body" id="analytics-body">
+                <div class="chart-container" id="chart-container">
+                    <!-- SVG Bar Chart injected by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Goal Input -->
+        <form class="input-form" id="goal-form">
+            <div class="input-wrapper">
+                <!-- Category Select Dropdown -->
+                <select id="goal-category" class="category-select" aria-label="Pilih Kategori">
+                    <option value="umum" title="Umum">🎯</option>
+                    <option value="kerja" title="Kerja">💼</option>
+                    <option value="belajar" title="Belajar">📚</option>
+                    <option value="kesehatan" title="Kesehatan">🏃</option>
+                    <option value="keuangan" title="Keuangan">💰</option>
+                </select>
+                <input type="text" id="goal-input" placeholder="Tulis target harianmu di sini..." maxlength="80" required autocomplete="off">
+                <button type="submit" class="add-goal-btn" aria-label="Tambah target">
+                    <svg viewBox="0 0 24 24">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+            </div>
+        </form>
+
+        <!-- Quick Templates Presets -->
+        <div class="templates-container">
+            <span class="templates-title">Templat Cepat:</span>
+            <div class="templates-list">
+                <button type="button" class="template-chip" data-text="Minum air 2 liter" data-category="kesehatan">💧 Minum Air</button>
+                <button type="button" class="template-chip" data-text="Membaca buku 15 menit" data-category="belajar">📚 Membaca</button>
+                <button type="button" class="template-chip" data-text="Olahraga / stretching 15 menit" data-category="kesehatan">🏃 Olahraga</button>
+                <button type="button" class="template-chip" data-text="Meditasi pagi 5 menit" data-category="kesehatan">🧘 Meditasi</button>
+                <button type="button" class="template-chip" data-text="Tinjau tugas harian" data-category="kerja">💼 Review Kerja</button>
+                <button type="button" class="template-chip" data-text="Catat pengeluaran hari ini" data-category="keuangan">💰 Catat Uang</button>
+            </div>
+        </div>
+
+        <!-- Goals List Section -->
+        <div class="list-section-header">
+            <h3>Daftar Target</h3>
+            <button class="clear-completed-btn" id="clear-completed" style="display: none;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                Bersihkan Selesai
+            </button>
+        </div>
+
+        <ul class="goals-list" id="goals-list">
+            <!-- Items injected by JS -->
+        </ul>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="empty-state">
+            <div class="empty-icon">🎯</div>
+            <p class="empty-title">Belum ada target hari ini</p>
+            <p class="empty-desc">Tulis target pertamamu di atas untuk memulai hari dengan penuh semangat!</p>
+        </div>
+    </div>
+
+    <!-- Celebration Canvas -->
+    <div class="celebration-canvas" id="celebration-canvas"></div>
+
+    <!-- Hidden Canvas for Shareable Image Generation -->
+    <canvas id="share-canvas" width="600" height="600" style="display: none;"></canvas>
+
+    <!-- New Record Modal -->
+    <div class="modal-overlay" id="record-modal">
+        <div class="modal-card">
+            <div class="modal-badge">🏆</div>
+            <h2 class="modal-title">Rekor Streak Baru!</h2>
+            <p class="modal-desc">Hebat! Kamu telah mencapai streak terlama baru: <strong id="modal-streak-val">0</strong> hari berurutan.</p>
+            
+            <div class="reward-box">
+                <span class="reward-gift">🎁</span>
+                <div class="reward-info">
+                    <p class="reward-title">Tema Baru Terbuka!</p>
+                    <p class="reward-desc">"Matcha Calm" & "Rose Quartz" kini siap digunakan.</p>
+                </div>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="modal-btn primary-btn" id="modal-apply-theme-btn">Pakai Tema Pastel</button>
+                <button class="modal-btn secondary-btn" id="modal-close-btn">Mantap!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application JavaScript -->
+    <script src="app.js" defer></script>
+</body>
+</html>
